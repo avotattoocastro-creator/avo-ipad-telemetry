@@ -1,12 +1,38 @@
 workflows:
-  ios-workflow:
-    name: iOS Workflow
+  avo-ios-release:
+    name: Avo Performance iOS Build
+    max_build_duration: 120
+    instance_type: mac_mini_m1
     environment:
       flutter: stable
       xcode: latest
+      cocoapods: default
+      # Las variables de entorno para el Code Signing se configuran en la UI de Codemagic
     scripts:
-      - name: Get packages
-        script: flutter packages pub get
-      - name: Build iOS
-        script: flutter build ios --release --no-codesign
-
+      - name: Obtener dependencias de Flutter
+        script: |
+          flutter packages pub get
+      - name: Instalar dependencias de iOS (CocoaPods)
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Compilar la aplicación para iOS (Generar IPA)
+        script: |
+          # Utiliza la configuración de firmas automática configurada en Codemagic UI
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      email:
+        recipients:
+          - tu_correo_admin@avoperformance.com
+        notify:
+          success: true
+          failure: true
+      # Opcional: Aquí podemos configurar la subida automática a TestFlight más adelante
+      # app_store_connect:
+      #   api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+      #   key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+      #   issuer_id: $APP_STORE_CONNECT_ISSUER_ID
