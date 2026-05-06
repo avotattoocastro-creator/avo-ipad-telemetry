@@ -1,0 +1,67 @@
+name: avo_performance_horse
+description: Sistema de telemetría de grado profesional para caballos de carreras.
+publish_to: 'none' # Restricción de privacidad: Evita la publicación accidental en pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # --- UI & F1-Style Design (High Contrast / Glassmorphism) ---
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.1.0         # Fuentes de alta legibilidad (ej. Roboto Mono para telemetría)
+  glassmorphism: ^3.0.0        # Efectos translúcidos para el dashboard UI
+  fl_chart: ^0.65.0            # Gráficos de altísimo rendimiento para ECG y ratios de fatiga (Neón)
+  
+  # --- Mapas & Localización (Precisión Centimétrica RTK) ---
+  google_maps_flutter: ^2.5.3  # Integración con Google Cloud Console (Maps API)
+  geolocator: ^10.1.0          # Manejo de coordenadas y cálculos de distancia
+  
+  # --- Conectividad & Hardware ---
+  flutter_blue_plus: ^1.18.0   # Para conexión BLE local (opcional/debug) o enlace directo al receptor LoRa/ESP32
+  
+  # --- IA & TinyML (Procesamiento Edge para Privacidad Total) ---
+  tflite_flutter: ^0.10.4      # Modelos TensorFlow Lite para detección de cojera y fatiga en tiempo real
+  
+  # --- Gestión de Estado & Arquitectura ---
+  flutter_riverpod: ^2.4.9     # Gestión de estado reactiva y robusta para flujos de datos rápidos
+  freezed_annotation: ^2.4.1   # Clases de datos inmutables para la telemetría
+  
+  # --- Almacenamiento Local (Privacidad & Offline First) ---
+  isar: ^3.1.0                 # Base de datos NoSQL ultrarrápida, ideal para series temporales de sensores
+  isar_flutter_libs: ^3.1.0
+  flutter_secure_storage: ^9.0.0 # Almacenamiento encriptado de claves y configuraciones del usuario
+  
+  # --- Permisos & Utilidades ---
+  permission_handler: ^11.1.0  # Gestión estricta de permisos (Bluetooth, Localización exacta)
+  intl: ^0.18.1                # Formateo de fechas y números de alta precisión
+  path_provider: ^2.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.7         # Generación de código para Freezed y Riverpod
+  freezed: ^2.4.5
+  isar_generator: ^3.1.0
+
+flutter:
+  uses-material-design: true
+
+  # Assets visuales y de IA
+  assets:
+    - assets/models/lameness_detector.tflite   # Modelo TinyML para cojera subclínica
+    - assets/models/fatigue_ratio.tflite       # Modelo TinyML para algoritmo Pulso/Velocidad
+    - assets/images/logo_avo.png
+    - assets/map_styles/dark_f1_style.json     # JSON de estilo oscuro/alto contraste para Google Maps
+
+  # Definición de fuentes personalizadas si decidimos no usar google_fonts en producción por dependencias de red
+  # fonts:
+  #   - family: TelemetryMono
+  #     fonts:
+  #       - asset: assets/fonts/TelemetryMono-Regular.ttf
+  #       - asset: assets/fonts/TelemetryMono-Bold.ttf
