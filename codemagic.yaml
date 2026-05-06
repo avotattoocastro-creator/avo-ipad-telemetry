@@ -1,0 +1,3 @@
+git add codemagic.yaml
+git commit -m "Añadido archivo codemagic.yaml"
+git push
